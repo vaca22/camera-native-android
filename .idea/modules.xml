@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/camera.iml" filepath="$PROJECT_DIR$/.idea/modules/camera.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/basic/camera.basic.iml" filepath="$PROJECT_DIR$/.idea/modules/basic/camera.basic.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/basic/camera.basic.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/basic/camera.basic.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/basic/camera.basic.main.iml" filepath="$PROJECT_DIR$/.idea/modules/basic/camera.basic.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/basic/camera.basic.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/basic/camera.basic.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/texture-view/camera.texture-view.iml" filepath="$PROJECT_DIR$/.idea/modules/texture-view/camera.texture-view.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/texture-view/camera.texture-view.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/texture-view/camera.texture-view.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/texture-view/camera.texture-view.main.iml" filepath="$PROJECT_DIR$/.idea/modules/texture-view/camera.texture-view.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/texture-view/camera.texture-view.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/texture-view/camera.texture-view.unitTest.iml" />
+    </modules>
+  </component>
+</project>

@@ -1,0 +1,4 @@
+# Project exclude paths
+/.gradle/
+/texture-view/build/
+/texture-view/build/intermediates/javac/debug/classes/
