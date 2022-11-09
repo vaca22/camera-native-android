@@ -1,18 +1,4 @@
-/*
- * Copyright (C) 2017 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+
 #include <utility>
 #include <queue>
 #include <unistd.h>
@@ -24,12 +10,7 @@
 #include "utils/native_debug.h"
 #include "utils/camera_utils.h"
 
-/**
- * Range of Camera Exposure Time:
- *     Camera's capability range have a very long range which may be disturbing
- *     on camera. For this sample purpose, clamp to a range showing visible
- *     video on preview: 100000ns ~ 250000000ns
- */
+
 static const uint64_t kMinExposureTime = static_cast<uint64_t>(1000000);
 static const uint64_t kMaxExposureTime = static_cast<uint64_t>(250000000);
 
@@ -99,11 +80,7 @@ NDKCamera::NDKCamera()
   valid_ = true;
 }
 
-/**
- * A helper class to assist image size comparison, by comparing the absolute
- * size
- * regardless of the portrait or landscape mode.
- */
+
 class DisplayDimension {
  public:
   DisplayDimension(int32_t w, int32_t h) : w_(w), h_(h), portrait_(false) {
@@ -158,13 +135,7 @@ class DisplayDimension {
   bool portrait_;
 };
 
-/**
- * Find a compatible camera modes:
- *    1) the same aspect ration as the native display window, which should be a
- *       rotated version of the physical device
- *    2) the smallest resolution in the camera mode list
- * This is to minimize the later color space conversion workload.
- */
+
 bool NDKCamera::MatchCaptureSizeRequest(int32_t requestWidth,
                                         int32_t requestHeight,
                                         ImageFormat* view) {
@@ -236,7 +207,6 @@ bool NDKCamera::MatchCaptureSizeRequest(int32_t requestWidth,
 void NDKCamera::CreateSession(ANativeWindow* previewWindow,
                               ANativeWindow* jpgWindow, bool manualPreview,
                               int32_t imageRotation) {
-  // Create output from this app's ANativeWindow, and add into output container
   requests_[PREVIEW_REQUEST_IDX].outputNativeWindow_ = previewWindow;
   requests_[PREVIEW_REQUEST_IDX].template_ = TEMPLATE_PREVIEW;
   requests_[JPG_CAPTURE_REQUEST_IDX].outputNativeWindow_ = jpgWindow;
@@ -255,7 +225,7 @@ void NDKCamera::CreateSession(ANativeWindow* previewWindow,
     CALL_REQUEST(addTarget(req.request_, req.target_));
   }
 
-  // Create a capture session for the given preview request
+
   captureSessionState_ = CaptureSessionState::READY;
   CALL_DEV(createCaptureSession(cameras_[activeCameraId_].device_,
                                 outputContainer_, GetSessionListener(),
@@ -269,12 +239,7 @@ void NDKCamera::CreateSession(ANativeWindow* previewWindow,
   if (!manualPreview) {
     return;
   }
-  /*
-   * Only preview request is in manual mode, JPG is always in Auto mode
-   * JPG capture mode could also be switch into manual mode and control
-   * the capture parameters, this sample leaves JPG capture to be auto mode
-   * (auto control has better effect than author's manual control)
-   */
+
   uint8_t aeModeOff = ACAMERA_CONTROL_AE_MODE_OFF;
   CALL_REQUEST(setEntry_u8(requests_[PREVIEW_REQUEST_IDX].request_,
                            ACAMERA_CONTROL_AE_MODE, 1, &aeModeOff));
@@ -324,12 +289,7 @@ NDKCamera::~NDKCamera() {
   }
 }
 
-/**
- * EnumerateCamera()
- *     Loop through cameras on the system, pick up
- *     1) back facing one if available
- *     2) otherwise pick the first one reported to us
- */
+
 void NDKCamera::EnumerateCamera() {
   ACameraIdList* cameraIds = nullptr;
   CALL_MGR(getCameraIdList(cameraMgr_, &cameraIds));
@@ -372,12 +332,7 @@ void NDKCamera::EnumerateCamera() {
   ACameraManager_deleteCameraIdList(cameraIds);
 }
 
-/**
- * GetSensorOrientation()
- *     Retrieve current sensor orientation regarding to the phone device
- * orientation
- *     SensorOrientation is NOT settable.
- */
+
 bool NDKCamera::GetSensorOrientation(int32_t* facing, int32_t* angle) {
   if (!cameraMgr_) {
     return false;
@@ -403,10 +358,7 @@ bool NDKCamera::GetSensorOrientation(int32_t* facing, int32_t* angle) {
   return true;
 }
 
-/**
- * StartPreview()
- *   Toggle preview start/stop
- */
+
 void NDKCamera::StartPreview(bool start) {
   if (start) {
     CALL_SESSION(setRepeatingRequest(captureSession_, nullptr, 1,
@@ -417,11 +369,7 @@ void NDKCamera::StartPreview(bool start) {
   }
 }
 
-/**
- * Capture one jpg photo into
- *     /sdcard/DCIM/Camera
- * refer to WriteFile() for details
- */
+
 bool NDKCamera::TakePhoto(void) {
   if (captureSessionState_ == CaptureSessionState::ACTIVE) {
     ACameraCaptureSession_stopRepeating(captureSession_);
@@ -460,15 +408,7 @@ void NDKCamera::UpdateCameraRequestParameter(int32_t code, int64_t val) {
                           &requests_[PREVIEW_REQUEST_IDX].sessionSequenceId_));
 }
 
-/**
- * Retrieve Camera Exposure adjustable range.
- *
- * @param min Camera minimium exposure time in nanoseconds
- * @param max Camera maximum exposure tiem in nanoseconds
- *
- * @return true  min and max are loaded with the camera's exposure values
- *         false camera has not initialized, no value available
- */
+
 bool NDKCamera::GetExposureRange(int64_t* min, int64_t* max, int64_t* curVal) {
   if (!exposureTime_ || !min || !max || !curVal) {
     return false;
@@ -480,15 +420,7 @@ bool NDKCamera::GetExposureRange(int64_t* min, int64_t* max, int64_t* curVal) {
   return true;
 }
 
-/**
- * Retrieve Camera sensitivity range.
- *
- * @param min Camera minimium sensitivity
- * @param max Camera maximum sensitivity
- *
- * @return true  min and max are loaded with the camera's sensitivity values
- *         false camera has not initialized, no value available
- */
+
 bool NDKCamera::GetSensitivityRange(int64_t* min, int64_t* max,
                                     int64_t* curVal) {
   if (!sensitivity_ || !min || !max || !curVal) {

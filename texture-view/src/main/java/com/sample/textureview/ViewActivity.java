@@ -127,13 +127,7 @@ public class ViewActivity extends Activity
         configureTransform(newWidth, newHeight);
     }
 
-    /**
-     * configureTransform()
-     * Courtesy to https://github.com/google/cameraview/blob/master/library/src/main/api14/com/google/android/cameraview/TextureViewPreview.java#L108
-     *
-     * @param width  TextureView width
-     * @param height is TextureView height
-     */
+
     void configureTransform(int width, int height) {
         int mDisplayOrientation = getWindowManager().getDefaultDisplay().getRotation() * 90;
         Matrix matrix = new Matrix();
@@ -240,12 +234,7 @@ public class ViewActivity extends Activity
 
     }
 
-    /*
-     * Functions calling into NDKCamera side to:
-     *     CreateCamera / DeleteCamera object
-     *     Start/Stop Preview
-     *     Pulling Camera Parameters
-     */
+
     private native long createCamera(int width, int height);
 
     private native Size getMinimumCompatiblePreviewSize(long ndkCamera);

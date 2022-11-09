@@ -49,24 +49,16 @@ CameraAppEngine::~CameraAppEngine() {
   }
 }
 
-/**
- * Create a capture session with given Java Surface Object
- * @param surface a {@link Surface} object.
- */
+
 void CameraAppEngine::CreateCameraSession(jobject surface) {
   surface_ = env_->NewGlobalRef(surface);
   camera_->CreateSession(ANativeWindow_fromSurface(env_, surface));
 }
 
-/**
- * @return cached {@link Surface} object
- */
+
 jobject CameraAppEngine::GetSurfaceObject() { return surface_; }
 
-/**
- *
- * @return saved camera preview resolution for this session
- */
+
 const ImageFormat& CameraAppEngine::GetCompatibleCameraRes() const {
   return compatibleCameraRes_;
 }
@@ -83,9 +75,5 @@ int CameraAppEngine::GetCameraSensorOrientation(int32_t requestFacing) {
   return 0;
 }
 
-/**
- *
- * @param start is true to start preview, false to stop preview
- * @return  true if preview started, false when error happened
- */
+
 void CameraAppEngine::StartPreview(bool start) { camera_->StartPreview(start); }

@@ -221,13 +221,7 @@ void NDKCamera::OnCaptureFailed(ACameraCaptureSession* session,
   }
 }
 
-/**
- * Process event from JPEG capture
- *    SessionCaptureCallback_OnSequenceEnd()
- *    SessionCaptureCallback_OnSequenceAborted()
- *
- * If this is jpg capture, turn back on preview after a catpure.
- */
+
 void NDKCamera::OnCaptureSequenceEnd(ACameraCaptureSession* session,
                                      int sequenceId, int64_t frameNumber) {
   if (sequenceId != requests_[JPG_CAPTURE_REQUEST_IDX].sessionSequenceId_)
